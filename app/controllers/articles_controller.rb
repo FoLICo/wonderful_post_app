@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :article, only: %i[ show edit update]# destroy ]
+  before_action :article, only: %i[ show edit update destroy ]
 
   # GET /articles or /articles.json
   def index
@@ -43,14 +43,14 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # # DELETE /articles/1 or /articles/1.json
-  # def destroy
-  #   @article.destroy
+  # DELETE /articles/1 or /articles/1.json
+  def destroy
+    @article.destroy
 
-  #   respond_to do |format|
-  #     format.html { redirect_to articles_url, notice: " article was successfully destroyed." }
-  #   end
-  # end
+    respond_to do |format|
+      format.html { redirect_to articles_url, notice: " article was successfully destroyed." }
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
