@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
-  before_action :article, only: %i[ show edit update destroy ]
+  before_action :article, only: %i[ edit update destroy ]
+  before_action :authenticate_user!, only: %i[ new edit create update destroy ]
 
   # GET /articles or /articles.json
   def index
@@ -8,6 +9,8 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1 or /articles/1.json
   def show
+    @article = Article.find(params[:id])
+
   end
 
   # GET /articles/new
@@ -23,6 +26,7 @@ class ArticlesController < ApplicationController
   def create
     @article = Article.new(article_params)
 
+# binding.pry
     respond_to do |format|
       if @article.save
         format.html { redirect_to article_url(@article), notice: " 新たな記事を作成しました " }
@@ -55,11 +59,11 @@ class ArticlesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def article
-      @article = Article.find(params[:id])
+      @article = current_user.articles.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.require(:article).permit(:title, :content)
+      params.require(:article).permit(:title, :content).merge(user_id: current_user.id)
     end
 end
