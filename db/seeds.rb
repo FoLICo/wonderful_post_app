@@ -46,8 +46,8 @@
     50.times do |n|
       user.articles.create!(
 
-      title: "No.#{n + 1}:user00#{user.id}の記事",
-      content: "No.#{n + 1}:user00#{user.id}の記事の本文",
+      title: "No.#{n + 1}: user00#{user.id}の記事",
+      content: "No.#{n + 1}: user00#{user.id}の記事の本文",
       )
     end
 end
