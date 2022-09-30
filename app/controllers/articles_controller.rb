@@ -8,9 +8,9 @@ class ArticlesController < ApplicationController
     # @articles = Article.where("title LIKE ?", "%#{params[:title]}%")
 
     if params[:title]
-      @articles = Article.where("title LIKE ?", "%#{params[:title]}%").page(params[:page])
+      @articles = Article.preload(:tags).where("title LIKE ?", "%#{params[:title]}%").page(params[:page])
     else
-      @articles = Article.all.page(params[:page])
+      @articles = Article.preload(:tags).all.page(params[:page])
     end
   end
 
@@ -36,6 +36,7 @@ class ArticlesController < ApplicationController
 # binding.pry
     respond_to do |format|
       if @article.save
+        # binding.pry
         format.html { redirect_to article_url(@article), notice: " 新たな記事を作成しました " }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -71,6 +72,7 @@ class ArticlesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.require(:article).permit(:title, :content).merge(user_id: current_user.id)
+      binding.pry
+      params.require(:article).permit(:title, :content, tag_ids: []).merge(user_id: current_user.id)
     end
 end
